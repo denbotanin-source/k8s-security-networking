@@ -41,3 +41,6 @@ Thumbs.db
 # Временные файлы
 *.tmp
 *.bak
+
+!requirements.txt
+
