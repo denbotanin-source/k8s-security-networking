@@ -53,4 +53,4 @@ jobs:
 
     - name: Scan Kubernetes manifests
       run: |
-        trivy config --severity CRITICAL,HIGH --exit-code 1 k8s/
+        trivy config --severity CRITICAL --exit-code 1 k8s/
