@@ -1,0 +1,40 @@
+# Git
+.git/
+.gitignore
+.github/
+
+# Отчёты Trivy
+*.sarif
+*.html
+*.xml
+trivy-results*
+
+# Python 
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Docker
+*.tar
+*.tar.gz
+Dockerfile
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Скрипты 
+*.sh
+*.log

@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: task-manager-binding
+  namespace: task-manager
+subjects:
+- kind: ServiceAccount
+  name: task-manager-sa
+  namespace: task-manager
+roleRef:
+  kind: Role
+  name: task-manager-role
+  apiGroup: rbac.authorization.k8s.io
