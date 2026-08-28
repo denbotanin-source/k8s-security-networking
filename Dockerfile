@@ -3,8 +3,9 @@ FROM python:3.12-slim-bookworm
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
+    build-essential \
     libpq-dev \
-    gcc \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN adduser --disabled-password --gecos '' --uid 1000 appuser
@@ -14,7 +15,6 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt \
     --index-url https://mirrors.aliyun.com/pypi/simple/ \
     --trusted-host mirrors.aliyun.com \
