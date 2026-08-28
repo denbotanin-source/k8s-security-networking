@@ -331,7 +331,3 @@ jobs:
 **denbotanin-source**
 
 GitHub: [https://github.com/denbotanin-source](https://github.com/denbotanin-source)
-
----
-
-*Проект выполнен в рамках курса по DevOps и Kubernetes Security.*
