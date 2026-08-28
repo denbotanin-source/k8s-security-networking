@@ -6,35 +6,50 @@ on:
   pull_request:
     branches: [ main, master ]
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   security-scan:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Install Trivy
       run: |
-        wget https://github.com/aquasecurity/trivy/releases/download/v0.55.0/trivy_0.55.0_Linux-64bit.deb
-        sudo dpkg -i trivy_0.55.0_Linux-64bit.deb
+        sudo apt-get update
+        sudo apt-get install -y wget
+        wget https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_Linux-64bit.deb
+        sudo dpkg -i trivy_0.74.0_Linux-64bit.deb
+        trivy --version
 
     - name: Build Docker image
-      run: docker build -t trivy-test:${{ github.sha }} .
+      run: docker build -t task-manager:${{ github.sha }} .
 
-    - name: Scan container image
+    - name: Run Trivy image scan (SARIF for GitHub Security)
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: 'trivy-test:${{ github.sha }}'
+        image-ref: 'task-manager:${{ github.sha }}'
         format: 'sarif'
         output: 'trivy-results.sarif'
         severity: 'CRITICAL,HIGH'
-        exit-code: '1'
+        exit-code: '0'
 
     - name: Upload Trivy results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: 'trivy-results.sarif'
+
+    - name: Run Trivy severity scan (fail on CRITICAL/HIGH)
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'task-manager:${{ github.sha }}'
+        format: 'table'
+        severity: 'CRITICAL,HIGH'
+        exit-code: '1'
 
     - name: Scan Kubernetes manifests
       run: |
